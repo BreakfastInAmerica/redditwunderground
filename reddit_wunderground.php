@@ -26,9 +26,6 @@ $subreddit = "subredditname"; /* the subreddit in which you want to submit to */
 
 /*###########################################################*/
 /* You should not need to edit anything else unless you want */
-/* **BUG notice. Http/Request2.php does not allow commas or  */
-/* space in the cookie value. There is a hack though on line */
-/* 93 of this script that tells you how.                     */
 /*###########################################################*/
 
 /*
@@ -86,14 +83,12 @@ $post = array('uh'=>$modhash,
 */
 $url = "https://ssl.reddit.com/api/submit";
 
-// Upvote RoboHobo's comment :)
-// Add user cookie data
-/*############################################################################################*
- * You will probably have to hack the HTTP/Request2.php Execption like I did.                 *
- * Just remove the "Invalid Cookie" IF statement around line 522  that sets off the exception *
- * and all works fine or you can hack the regex begin filtered by the IF statement.           *
- * ###########################################################################################*/
-$r->addCookie("reddit_session", $reddit_session);
+/* Fixed to work with HTTP/Request2 without modifications */
+$headers = $r->getHeaders();
+$cookie = "reddit_session" . '=' . $reddit_session;
+$cookies = empty($headers['cookie'])? '': $headers['cookie'] . '; ';
+$r->setHeader('cookie', $cookies . $cookie);
+
 // Set URL to submit
 $r->setUrl($url);
 // Add vote information, found at http://wiki.github.com/talklittle/reddit-is-fun/api-all-functions
