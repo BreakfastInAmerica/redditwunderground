@@ -9,4 +9,4 @@ Requirements:
 Pear HTTP_Request2
 
 Bugs:
-Reddit returns a cookie that HTTP_Request2 sees as invalid. You can modify HTTP_Request2 to remove the exception or edit the regex.
+None reported at this time. 
